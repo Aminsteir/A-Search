@@ -39,8 +39,6 @@ var totalLength;
 var walledCoveredArr;
 
 var r = 1;
-var g = 1;
-var b = 1;
 
 function Spot(i,j) {
   this.i = i;
@@ -178,9 +176,9 @@ function restart() {
 function setup() {
   createCanvas(windowWidth - paddingLeft, windowHeight - paddingTop);
 
-  r = random(0,255);
-  g = random(0,255);
-  b = random(0,255);
+  colorMode(HSB);
+
+  r = 0.0;
 
   buttonStart = createButton("Start");
   buttonStart.position(5,5);
@@ -258,16 +256,13 @@ function setup() {
 function draw() {
   clear();
 
-  r = r % 255;
-  g = g % 255;
-  b = b % 255;
+  if (r >= 255) {
+    r=0;
+  } else {
+    r+=0.5;
+  }
 
-  r++;
-  g++;
-  b++;
-
-  //background(255); -- total white background
-  background(220); // bit grey
+  background(220,100,100);
 
   if (startBool) {
     if (openSet.length > 0) {
@@ -337,18 +332,18 @@ function draw() {
 
   for (let i = 0; i < cols; i++) {
     for (let j = 0; j < rows; j++) {
-      grid[i][j].show(color(255));
+      grid[i][j].show(color(0, 0, 100));
     }
   }
 
   /*for (let i = 0; i < closedSet.length; i++) {
-    closedSet[i].show(color(255, 0, 0));
+    closedSet[i].show(color(0, 100, 100));
   }
 
   --- uncomment to see the closed and open path posibilities
 
   for (let i = 0; i < openSet.length; i++) {
-    openSet[i].show(color(0, 255, 0));
+    openSet[i].show(color(120, 100, 100));
   }*/
 
   walledCoveredArr = [];
@@ -367,17 +362,17 @@ function draw() {
   }
 
   noFill();
-  stroke(82,222,151);
+  stroke(color(150, 95, 100));
   strokeWeight(squareSide / 2);
   beginShape();
   for (let i = 0; i < path.length; i++) {
-    //path[i].show(color(0,0,255));
+    //path[i].show(color(210,95,100));
     vertex(path[i].i * squareSide + squareSide / 2, path[i].j * squareSide + squareSide / 2);
   }
   endShape();
 
-  start.show(color(r,g,b));
-  end.show(color(255-r,255-g,255-b));
+  start.show(color(r,255,255));
+  end.show(color(255-r,255,255));
 }
 
 function iterateThroughNeighbors(current) {
